@@ -4,12 +4,16 @@
 %}
 %option noyywrap
 %%
-"int"|"float"|"char"|"string" {return TIP;}
+
 "begin_progr" {return BGIN;}
 "end_progr" {return END;}
-@[_a-zA-Z][_a-zA-Z0-9]* {return ID;}
+"while" {return WHILE;}
+"if" {return IF;}
+"else" {return ELSE;}
+"int"|"float"|"char"|"bool"|"string" {return TIP;}
+[_a-zA-Z][_a-zA-Z0-9]* {return ID;}
+[0-9] {return NR;}
 ":=" {return ASSIGN;}
-[0-9]+ {return NR;}
 [ \t] ;
 \n {yylineno++;}
 . {return yytext[0];}
