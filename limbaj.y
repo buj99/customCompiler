@@ -11,7 +11,7 @@ extern int yylineno;
 
 %start code 
 %%
-code: declaratii bloc_comenzi 
+code: declaratii main_block 
 {printf("program corect sintactic\n");}
     ;
 
@@ -39,7 +39,21 @@ param: ID ':' TIP
         ;
 vector:ID ':' TIP '[' SIZE ']'
         ;
-bloc_comenzi: BGIN END
+main_block: BGIN list END
+        |BGIN  END
+        ;
+list:statement ';'
+        |list statement ';'
+        ;
+statement:ID ASSIGN ID
+        |ID ASSIGN NR
+        |ID '(' ')'
+        |ID '(' lista_apel ')'
+        ;
+lista_apel: NR
+        |ID
+        |lista_apel ',' NR
+        |lista_apel ',' ID
         ;
 %%
 void yyerror(char * s){
