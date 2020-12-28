@@ -19,6 +19,7 @@ code: declaratii main_block
 
 declaratii:declaratie
         |declaratii declaratie
+        |nothing
         ;
 declaratie:param';'
         |vector';'
