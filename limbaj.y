@@ -6,7 +6,7 @@ extern int yylineno;
 %}
 
 %token BGIN END ID TIP CLASS
-%token IF ELSE CONDITIE WHILE
+%token IF ELSE CONDITIE WHILE BOOLVALUE BOOLOPERATOR
 %token ASSIGN NR SIZE
 
 
@@ -58,7 +58,19 @@ lista_apel: NR
         |lista_apel ',' NR
         |lista_apel ',' ID
         ;
-repetitive_structure:WHILE '('CONDITIE ')''{'list '}'
+repetitive_structure:WHILE '('conditie ')''{'list '}'
+        ;
+conditie:ID
+        |BOOLVALUE
+        |boolexpresion
+        ;
+boolexpresion:
+        ID BOOLOPERATOR ID
+        |ID BOOLOPERATOR BOOLVALUE
+        |ID BOOLOPERATOR boolexpresion
+        |BOOLVALUE BOOLOPERATOR ID
+        |BOOLVALUE BOOLOPERATOR BOOLVALUE
+        |BOOLVALUE BOOLOPERATOR boolexpresion
         ;
 nothing:
 ;

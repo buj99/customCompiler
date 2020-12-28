@@ -11,6 +11,8 @@
 "while" {return WHILE;}
 "if" {return IF;}
 "else" {return ELSE;}
+"true"|"TRUE"|"false"|"FALSE" {return BOOLVALUE;}
+"&&"|"||" {return BOOLOPERATOR;}
 "conditie" {return CONDITIE;}
 "int"|"float"|"char"|"bool"|"string" {return TIP;}
 [_a-zA-Z][_a-zA-Z0-9]* {return ID;}
