@@ -46,6 +46,7 @@ main_block: BGIN list END
 list:statement ';'
         |list statement ';'
         |list repetitive_structure
+        |list if
         |nothing
         ;
 statement:ID ASSIGN ID
@@ -57,6 +58,8 @@ lista_apel: NR
         |ID
         |lista_apel ',' NR
         |lista_apel ',' ID
+        ;
+if:     IF'('conditie')''{'list'}'
         ;
 repetitive_structure:WHILE '('conditie ')''{'list '}'
         ;
