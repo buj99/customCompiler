@@ -7,6 +7,7 @@ extern int yylineno;
 
 %token BGIN END ID TIP CLASS
 %token IF ELSE CONDITIE WHILE BOOLVALUE BOOLOPERATOR
+%token MATHOPERATOR
 %token ASSIGN NR SIZE
 
 
@@ -51,13 +52,20 @@ list:statement ';'
         ;
 statement:ID ASSIGN ID
         |ID ASSIGN NR
+        |ID ASSIGN mathexpresions
+        |ID ASSIGN boolexpresion
         |ID '(' ')'
         |ID '(' lista_apel ')'
         ;
 lista_apel: NR
         |ID
+        |BOOLVALUE
+        |boolexpresion
+        |mathexpresions
         |lista_apel ',' NR
         |lista_apel ',' ID
+        |lista_apel ',' boolexpresion
+        |lista_apel ',' mathexpresions
         ;
 if:     IF'('conditie')''{'list'}'
         ;
@@ -74,6 +82,16 @@ boolexpresion:
         |BOOLVALUE BOOLOPERATOR ID
         |BOOLVALUE BOOLOPERATOR BOOLVALUE
         |BOOLVALUE BOOLOPERATOR boolexpresion
+        ;
+mathexpresions:
+        ID
+        NR
+        |ID MATHOPERATOR ID
+        |ID MATHOPERATOR NR
+        |ID MATHOPERATOR mathexpresions
+        |NR MATHOPERATOR ID
+        |NR MATHOPERATOR NR
+        |NR MATHOPERATOR mathexpresions
         ;
 nothing:
 ;
