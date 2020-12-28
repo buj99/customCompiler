@@ -21,6 +21,7 @@ declaratii:declaratie
 declaratie:param';'
         |vector';'
         |function';'
+        |CLASS ID '{' class_declaration '}' 
         ;
 function:ID '('lista_param')'
         |ID '(' ')'
@@ -31,6 +32,8 @@ lista_param: param
         | vector
         | lista_param ','  param
         | lista_param ',' vector
+        ;
+class_declaration: declaratii
         ;
 param: ID ':' TIP
         ;
