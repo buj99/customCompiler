@@ -2,3 +2,4 @@
 # ca sa poata celalat sa dea un sfat in caz de ceva si sa lase mesaj
 # daca a reusit sa rezolve 
 
+eroare de sintaxa daca nu se declara nimic la inceput asta e pe branch
