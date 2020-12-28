@@ -1,8 +1,0 @@
-_int:int;
-_char:char;
-_float:float;
-_bool:bool;
-_string:string;
-begin_progr
-
-end_progr
