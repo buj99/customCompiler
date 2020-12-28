@@ -7,12 +7,14 @@
 
 "begin_progr" {return BGIN;}
 "end_progr" {return END;}
+"class" {return CLASS;}
 "while" {return WHILE;}
 "if" {return IF;}
 "else" {return ELSE;}
 "int"|"float"|"char"|"bool"|"string" {return TIP;}
 [_a-zA-Z][_a-zA-Z0-9]* {return ID;}
 [0-9] {return NR;}
+[1-9][0-9]* {return SIZE;}
 ":=" {return ASSIGN;}
 [ \t] ;
 \n {yylineno++;}
