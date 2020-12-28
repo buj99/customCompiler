@@ -1,6 +1,6 @@
 all :
 	make out
-	./out test
+	./out test.txt
 
 yacc : limbaj.y
 	yacc -d limbaj.y
