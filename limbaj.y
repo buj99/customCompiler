@@ -6,8 +6,9 @@ extern int yylineno;
 %}
 
 %token BGIN END ID TIP CLASS
-%token WHILE IF ELSE 
+%token IF ELSE CONDITIE WHILE
 %token ASSIGN NR SIZE
+
 
 %start code 
 %%
@@ -44,6 +45,8 @@ main_block: BGIN list END
         ;
 list:statement ';'
         |list statement ';'
+        |list repetitive_structure
+        |nothing
         ;
 statement:ID ASSIGN ID
         |ID ASSIGN NR
@@ -55,6 +58,10 @@ lista_apel: NR
         |lista_apel ',' NR
         |lista_apel ',' ID
         ;
+repetitive_structure:WHILE '('CONDITIE ')''{'list '}'
+        ;
+nothing:
+;
 %%
 void yyerror(char * s){
 printf("eroare: %s la linia:%d\n",s,yylineno);
