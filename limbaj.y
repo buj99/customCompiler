@@ -77,22 +77,8 @@ conditie:ID
         |boolexpresion
         ;
 boolexpresion:
-        ID BOOLOPERATOR ID
-        |ID BOOLOPERATOR BOOLVALUE
-        |ID BOOLOPERATOR boolexpresion
-        |BOOLVALUE BOOLOPERATOR ID
-        |BOOLVALUE BOOLOPERATOR BOOLVALUE
-        |BOOLVALUE BOOLOPERATOR boolexpresion
         ;
 mathexpresions:
-        ID
-        NR
-        |ID MATHOPERATOR ID
-        |ID MATHOPERATOR NR
-        |ID MATHOPERATOR mathexpresions
-        |NR MATHOPERATOR ID
-        |NR MATHOPERATOR NR
-        |NR MATHOPERATOR mathexpresions
         ;
 nothing:
 ;
