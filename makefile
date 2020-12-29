@@ -14,3 +14,5 @@ clean_c:
 	rm y.tab.c y.tab.h lex.yy.c
 clean : 
 	rm y.tab.c y.tab.h out lex.yy.c
+test :
+	./out test.txt

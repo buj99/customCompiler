@@ -6,7 +6,7 @@ extern int yylineno;
 %}
 
 %token BGIN END ID TIP CLASS
-%token IF ELSE CONDITIE WHILE BOOLVALUE BOOLOPERATOR
+%token IF ELSE CONDITIE WHILE BOOLVALUE BOOLOPERATOR COMPR
 %token MATHOPERATOR
 %token ASSIGN NR SIZE
 
@@ -63,36 +63,29 @@ lista_apel: NR
         |BOOLVALUE
         |boolexpresion
         |mathexpresions
-        |lista_apel ',' NR
-        |lista_apel ',' ID
-        |lista_apel ',' boolexpresion
-        |lista_apel ',' mathexpresions
+        |ID '(' ')'
+        |ID '(' lista_apel ')'
+        |lista_apel ',' lista_apel
         ;
-if:     IF'('conditie')''{'list'}'
+if:     IF'('boolexpresion')''{'list'}'
+        |IF'('boolexpresion')''{'list'}' ELSE '{'list'}'
         ;
-repetitive_structure:WHILE '('conditie ')''{'list '}'
-        ;
-conditie:ID
-        |BOOLVALUE
-        |boolexpresion
+repetitive_structure:WHILE '('boolexpresion ')''{'list '}'
         ;
 boolexpresion:
-        ID BOOLOPERATOR ID
-        |ID BOOLOPERATOR BOOLVALUE
-        |ID BOOLOPERATOR boolexpresion
-        |BOOLVALUE BOOLOPERATOR ID
-        |BOOLVALUE BOOLOPERATOR BOOLVALUE
-        |BOOLVALUE BOOLOPERATOR boolexpresion
+        |ID
+        |BOOLVALUE
+        |ID '(' ')'
+        |ID '(' lista_apel ')'
+        |mathexpresions COMPR mathexpresions
+        |boolexpresion BOOLOPERATOR boolexpresion
         ;
 mathexpresions:
         ID
-        NR
-        |ID MATHOPERATOR ID
-        |ID MATHOPERATOR NR
-        |ID MATHOPERATOR mathexpresions
-        |NR MATHOPERATOR ID
-        |NR MATHOPERATOR NR
-        |NR MATHOPERATOR mathexpresions
+        |NR
+        |ID '(' ')'
+        |ID '(' lista_apel ')'
+        |mathexpresions MATHOPERATOR mathexpresions
         ;
 nothing:
 ;

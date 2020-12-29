@@ -13,6 +13,7 @@
 "else" {return ELSE;}
 "true"|"TRUE"|"false"|"FALSE" {return BOOLVALUE;}
 "&&"|"||"|"!="|"==" {return BOOLOPERATOR;}
+"=="|"<="|"<"|">"|">="|"!=" {return COMPR;}
 "-"|"+"|"/"|"%"|"^"|"*" {return MATHOPERATOR;}
 "conditie" {return CONDITIE;}
 "int"|"float"|"char"|"bool"|"string" {return TIP;}
