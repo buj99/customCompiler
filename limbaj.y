@@ -1,15 +1,25 @@
 %{
 #include <stdio.h>
+#include <string.h>
+#include "functionsList.c"
 extern FILE* yyin;
 extern char* yytext;
 extern int yylineno;
+
 %}
 
-%token BGIN END ID TIP CLASS
+%union {
+int intval;
+char* strval;
+char* tipString;
+}
+%token <strval>ID 
+%token <strval>TIP
+%token BGIN END 
+%token CLASS
 %token IF ELSE CONDITIE WHILE BOOLVALUE BOOLOPERATOR COMPR
 %token MATHOPERATOR
 %token ASSIGN NR SIZE
-
 
 %start code 
 %%
@@ -26,22 +36,31 @@ declaratie:param';'
         |function';'
         |CLASS ID '{' class_declaration '}' 
         ;
-function:ID '('lista_param')'
-        |ID '(' ')'
-        |ID '('lista_param ')' ':' TIP
-        |ID '(' ')' ':' TIP
+function:ID '('lista_param')' { addFunctionToFunctionsListHead( $1, currentFunctionParameterListHead, "void" ); }
+        |ID '(' ')' { addFunctionToFunctionsListHead( $1, NULL, "void" ); }
+        |ID '('lista_param ')' ':' TIP { addFunctionToFunctionsListHead( $1, currentFunctionParameterListHead, $6); }
+        |ID '(' ')' ':' TIP { addFunctionToFunctionsListHead( $1, NULL, $5); }
         ;
-lista_param: param
-        | vector
-        | lista_param ','  param
-        | lista_param ',' vector
+lista_param: functionParam
+        | functionVector
+        | lista_param ','  functionParam
+        | lista_param ',' functionVector
         ;
 class_declaration: declaratii
         ;
+
 param: ID ':' TIP
         ;
-vector:ID ':' TIP '[' SIZE ']'
+
+functionParam: ID ':' TIP { addFunctionParameterToCurrentFunctionParameterListHead( $1, $3, false); }
         ;
+
+vector:ID ':' TIP '[' NR ']'
+        ;
+
+functionVector:ID ':' TIP '[' NR ']' { addFunctionParameterToCurrentFunctionParameterListHead( $1, $3, true); }
+        ;
+
 main_block: BGIN list END
         |BGIN  END
         ;
@@ -67,8 +86,8 @@ lista_apel: NR
         |ID '(' lista_apel ')'
         |lista_apel ',' lista_apel
         ;
-if:     IF'('boolexpresion')''{'list'}'
-        |IF'('boolexpresion')''{'list'}' ELSE '{'list'}'
+if:     IF '('boolexpresion')''{'list'}'
+        |IF '('boolexpresion')''{'list'}' ELSE '{'list'}'
         ;
 repetitive_structure:WHILE '('boolexpresion ')''{'list '}'
         ;
@@ -95,6 +114,14 @@ printf("eroare: %s la linia:%d\n",s,yylineno);
 }
 
 int main(int argc, char** argv){
+
 yyin=fopen(argv[1],"r");
 yyparse();
+
+//DEBUG
+// struct FunctionNode* aux = functionsListHead;
+//   while(aux != NULL) {
+//       printf("Numele este: %s\n", aux->name);
+//      aux = aux->nextNode;
+//  }
 } 
