@@ -127,13 +127,14 @@ void print_symbol_table(symbol_table *start){
     }
 }
 
-bool declaration_finder_in_symbol_table(symbol_table* start, char* identifier){
+declaration* declaration_finder_in_symbol_table(symbol_table* start, char* identifier){
     symbol_table * temp = start;
+    declaration_list* res;
     while(temp!=NULL){
-        if(declaration_finder(identifier,temp->dec_list)!=NULL) return true;
+        if((res=declaration_finder(identifier,temp->dec_list))!=NULL) return res->dec;
         temp=temp->next;
     }
-    return false;
+    return NULL;
 }
 
     
