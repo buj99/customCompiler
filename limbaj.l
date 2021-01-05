@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include "y.tab.h"
+
 %}
 %option noyywrap
 %%
@@ -16,8 +17,8 @@
 "=="|"<="|"<"|">"|">="|"!=" {return COMPR;}
 "-"|"+"|"/"|"%"|"^"|"*" {return MATHOPERATOR;}
 "conditie" {return CONDITIE;}
-"int"|"float"|"char"|"bool"|"string" {return TIP;}
-[_a-zA-Z][_a-zA-Z0-9]* {return ID;}
+"int"|"float"|"char"|"bool"|"string" {yylval.strval=strdup(yytext); return TIP;}
+[_a-zA-Z][_a-zA-Z0-9]* {yylval.strval=strdup(yytext); return ID;}
 [1-9][0-9]* {return NR;}
 [1-9][0-9]* {return SIZE;}
 ":=" {return ASSIGN;}
