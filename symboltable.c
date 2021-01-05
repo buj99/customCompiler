@@ -3,12 +3,24 @@
 #include <stdbool.h>
 #include <string.h>
 
+
+enum declarationElementType { constant, variable, function, class };
+
+struct FunctionParam {
+        char* name;
+        char* type;
+        bool isVector;
+        struct FunctionParam* nextParam;
+} *currentFunctionParameterListHead;
+
+
 typedef struct declaration{
     char * identifier; 
     char * type;
-    bool is_var;
-    bool is_const;
+    enum declarationElementType elementType;
+    struct FunctionParam* paramsListHead;
 }declaration;
+
 typedef struct declaration_list{
     declaration* dec;
     struct declaration_list * next;
@@ -20,15 +32,34 @@ typedef struct symbol_table{
     struct symbol_table * next; 
 }symbol_table;
 
+symbol_table * st= NULL;
+
+addFunctionParameterToCurrentFunctionParameterListHead( char* name, char* type, bool isVector){
+        struct FunctionParam* newParam = malloc(sizeof(struct FunctionParam));
+        newParam->name = name;
+        newParam->type = type;
+        newParam->isVector = isVector;
+        if(currentFunctionParameterListHead == NULL){
+                currentFunctionParameterListHead = newParam;
+        } else {
+                while(currentFunctionParameterListHead->nextParam != NULL) {
+                        currentFunctionParameterListHead = currentFunctionParameterListHead->nextParam;
+                }
+                currentFunctionParameterListHead->nextParam = newParam;
+        }
+        //DEBUG
+        // printf("Am adaugat parametrul %s de tipul %s\n", newParam->name, newParam->type);
+}
+
 // declaration functions ; 
-declaration * create_declaration(char* identifier, char* type , bool is_var, bool is_const){
-    declaration * temp= malloc(sizeof(declaration));
-    temp->identifier=realloc(temp->identifier,sizeof(identifier));
-    temp->type=realloc(temp->type,sizeof(type));
-    strcpy(temp->identifier,identifier);
-    strcpy(temp->type,type);
-    temp->is_var= is_var;
-    temp->is_const= is_const;
+declaration * create_declaration(char* identifier, char* type , enum declarationElementType elementType){
+    declaration * temp= malloc(sizeof(struct declaration));
+    temp->identifier = identifier;
+    temp->type = type;
+    temp->elementType = elementType;
+    if(elementType == function) {
+        temp->paramsListHead = currentFunctionParameterListHead;
+    }
     return temp;
 }
 void print_dec_info(declaration* dec){
@@ -85,6 +116,7 @@ bool add_to_symbol_table(symbol_table** start , char*scope, declaration* new_dec
     }
     return add_to_dec_list(&scope_to_add_in->dec_list,new_declaration);
 }
+
 void print_symbol_table(symbol_table *start){
     symbol_table* temp = start; 
     while(temp!=NULL){
@@ -94,27 +126,27 @@ void print_symbol_table(symbol_table *start){
         printf("------------------------------\n");
     }
 }
+
 bool declaration_finder_in_symbol_table(symbol_table* start, declaration* dec){
 }
-int main(int argc, char** argv){
+// int main(int argc, char** argv){
 
-    symbol_table * st= NULL;
-    declaration* dec1= create_declaration("id1", "int", true , true);
-    declaration* dec2= create_declaration("id2", "int", true , true);
-    declaration* dec3= create_declaration("id3", "char", true , true);
-    declaration* dec4= create_declaration("id4", "char", true , true);
-    declaration* dec5= create_declaration("id5", "bool", true , true);
-    declaration* dec6= create_declaration("id6", "float", true , true);
-    add_to_symbol_table(&st,"global",dec4);
-    add_to_symbol_table(&st,"clasa",dec1);
-    add_to_symbol_table(&st,"functie",dec3);
-    add_to_symbol_table(&st,"structura",dec2);
-    add_to_symbol_table(&st,"scope2",dec5);
-    add_to_symbol_table(&st,"scope1",dec6);
-    add_to_symbol_table(&st,"scope1",dec3);
-    add_to_symbol_table(&st,"scope1",dec3);
-    print_symbol_table(st);
+    // declaration* dec1= create_declaration("id1", "int", true , true);
+    // declaration* dec2= create_declaration("id2", "int", true , true);
+    // declaration* dec3= create_declaration("id3", "char", true , true);
+    // declaration* dec4= create_declaration("id4", "char", true , true);
+    // declaration* dec5= create_declaration("id5", "bool", true , true);
+    // declaration* dec6= create_declaration("id6", "float", true , true);
+    // add_to_symbol_table(&st,"global",dec4);
+    // add_to_symbol_table(&st,"clasa",dec1);
+    // add_to_symbol_table(&st,"functie",dec3);
+    // add_to_symbol_table(&st,"structura",dec2);
+    // add_to_symbol_table(&st,"scope2",dec5);
+    // add_to_symbol_table(&st,"scope1",dec6);
+    // add_to_symbol_table(&st,"scope1",dec3);
+    // add_to_symbol_table(&st,"scope1",dec3);
+    // print_symbol_table(st);
     
-    return 0;
-}
+    // return 0;
+// }
 

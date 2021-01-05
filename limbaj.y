@@ -1,7 +1,8 @@
 %{
 #include <stdio.h>
 #include <string.h>
-#include "functionsList.c"
+//#include "functionsList.c"
+#include "symboltable.c"
 extern FILE* yyin;
 extern char* yytext;
 extern int yylineno;
@@ -36,10 +37,34 @@ declaratie:param';'
         |function';'
         |CLASS ID '{' class_declaration '}' 
         ;
-function:ID '('lista_param')' { addFunctionToFunctionsListHead( $1, currentFunctionParameterListHead, "void" ); }
-        |ID '(' ')' { addFunctionToFunctionsListHead( $1, NULL, "void" ); }
-        |ID '('lista_param ')' ':' TIP { addFunctionToFunctionsListHead( $1, currentFunctionParameterListHead, $6); }
-        |ID '(' ')' ':' TIP { addFunctionToFunctionsListHead( $1, NULL, $5); }
+function:ID '(' lista_param ')'
+        { 
+            if(add_to_symbol_table (&st, "global", create_declaration( $1, "void", function)) == false) {
+                yyerror("Deja declarat\n");
+                return 0;
+            } 
+        }
+        |ID '(' ')' 
+        { 
+            if(add_to_symbol_table (&st, "global", create_declaration( $1, "void", function)) == false) {
+                yyerror("Deja declarat\n");
+                return 0;
+            } 
+        }
+        |ID '('lista_param ')' ':' TIP
+        { 
+            if(add_to_symbol_table (&st, "global", create_declaration( $1, $6, function)) == false) {
+                yyerror("Deja declarat\n");
+                return 0;
+            } 
+        }
+        |ID '(' ')' ':' TIP 
+        {
+            if(add_to_symbol_table (&st, "global", create_declaration( $1, $5, function)) == false) {
+                yyerror("Deja declarat\n");
+                return 0;
+            } 
+        }
         ;
 lista_param: functionParam
         | functionVector
@@ -52,13 +77,13 @@ class_declaration: declaratii
 param: ID ':' TIP
         ;
 
-functionParam: ID ':' TIP { addFunctionParameterToCurrentFunctionParameterListHead( $1, $3, false); }
+functionParam: ID ':' TIP //{ addFunctionParameterToCurrentFunctionParameterListHead( $1, $3, false); }
         ;
 
 vector:ID ':' TIP '[' NR ']'
         ;
 
-functionVector:ID ':' TIP '[' NR ']' { addFunctionParameterToCurrentFunctionParameterListHead( $1, $3, true); }
+functionVector:ID ':' TIP '[' NR ']' //{ addFunctionParameterToCurrentFunctionParameterListHead( $1, $3, true); }
         ;
 
 main_block: BGIN list END
@@ -118,7 +143,9 @@ int main(int argc, char** argv){
 yyin=fopen(argv[1],"r");
 yyparse();
 
+
 //DEBUG
+print_symbol_table(st);
 // struct FunctionNode* aux = functionsListHead;
 //   while(aux != NULL) {
 //       printf("Numele este: %s\n", aux->name);

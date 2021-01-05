@@ -55,19 +55,3 @@ addFunctionToFunctionsListHead(char* name, struct FunctionParam* paramsListHead,
 }
 
 
-addFunctionParameterToCurrentFunctionParameterListHead( char* name, char* type, bool isVector){
-        struct FunctionParam* newParam = malloc(sizeof(struct FunctionParam));
-        newParam->name = name;
-        newParam->type = type;
-        newParam->isVector = isVector;
-        if(currentFunctionParameterListHead == NULL){
-                currentFunctionParameterListHead = newParam;
-        } else {
-                while(currentFunctionParameterListHead->nextParam != NULL) {
-                        currentFunctionParameterListHead = currentFunctionParameterListHead->nextParam;
-                }
-                currentFunctionParameterListHead->nextParam = newParam;
-        }
-        //DEBUG
-        // printf("Am adaugat parametrul %s de tipul %s\n", newParam->name, newParam->type);
-}
