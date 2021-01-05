@@ -1,0 +1,18 @@
+ 
+struct lista 
+    -nume variabila
+    -valoare 
+    -pointer la urmatorul
+
+
+int
+1->2->3->null
+
+char
+1->2->3->null
+
+
+id
+return_tipe
+scope
+id_p1_p2_p3
