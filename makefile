@@ -16,3 +16,5 @@ clean :
 	rm y.tab.c y.tab.h out lex.yy.c
 test :
 	./out test.txt
+st: symboltable.c
+	gcc symboltable.c -o st
